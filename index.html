@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English → Igbo Translator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f7f8fa;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px;
+        }
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+        }
+        textarea {
+            width: 80%;
+            height: 120px;
+            margin-bottom: 20px;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 16px;
+            resize: none;
+        }
+        button {
+            background-color: #0078D7;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #005ea0;
+        }
+        .output {
+            margin-top: 25px;
+            width: 80%;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 5px rgba(0,0,0,0.1);
+        }
+        .output p {
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <h1>English → Igbo Translator</h1>
+    <textarea id="inputText" placeholder="Type your English text here..."></textarea><br>
+    <button onclick="translateText()">Translate</button>
+    <div class="output" id="outputArea">
+        <p><strong>Translation:</strong> <span id="translatedText">—</span></p>
+    </div>
+
+    <script>
+        async function translateText() {
+            const text = document.getElementById("inputText").value.trim();
+            if (!text) {
+                alert("Please enter text to translate.");
+                return;
+            }
+
+            const response = await fetch("http://127.0.0.1:8000/translate", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ text })
+            });
+
+            if (!response.ok) {
+                document.getElementById("translatedText").innerText = "Error: could not get translation.";
+                return;
+            }
+
+            const result = await response.json();
+            document.getElementById("translatedText").innerText = result.translated_text;
+        }
+    </script>
+</body>
+</html>
