@@ -3,3 +3,4 @@ uvicorn
 transformers
 torch>=2.6
 sacremoses
+sentencepiece
